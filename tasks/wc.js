@@ -18,7 +18,9 @@ module.exports = function(grunt) {
     var options = this.options({
       punctuation: '.',
       separator: ', '
-    });
+    }),
+        tmp = '',
+        out = '';
 
     // Iterate over all specified file groups.
     this.files.forEach(function(f) {
@@ -33,14 +35,18 @@ module.exports = function(grunt) {
         }
       }).map(function(filepath) {
         // Read file source.
-        return grunt.file.read(filepath);
-      }).join(grunt.util.normalizelf(options.separator));
+grunt.log.writeln('WORKING ON:'+filepath);
+        tmp = grunt.file.read(filepath);
+        out += filepath  + ': '+ tmp.length + '\n';
+        return tmp;
+      });
+          //.join(grunt.util.normalizelf(options.separator));
 
       // Handle options.
       src += options.punctuation;
 
       // Write the destination file.
-      grunt.file.write(f.dest, src);
+      grunt.file.write(f.dest, out);
 
       // Print a success message.
       grunt.log.writeln('File "' + f.dest + '" created.');
